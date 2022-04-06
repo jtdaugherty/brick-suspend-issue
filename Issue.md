@@ -23,17 +23,13 @@ STDIN into a Brick program. Because the `inputFd` is assigned to
 `stdin` by default, I need it to be reassigned to `/dev/tty` in order
 to make the terminal UI interactive.
 
-Compile and run with:
+If you compile and run my demo executable in the Ubuntu Terminal (tested on
+Ubuntu 20.04), pressing SPACE once suspends and pressing ESC once quits -- just
+like the original demo.
 
-    cabal run
+If you run the executable in the MacOS Terminal (macOS Montery, Apple M1 Pro),
+pressing SPACE or ESC once isn't sufficient. You need to press another key
+afterward to make the suspend or quit command register. Is this bug, or is
+there something wrong with my Haskell code?
 
-If you compile and run this executable in the Ubuntu Terminal (tested
-on Ubuntu 20.04), pressing SPACE once suspends and pressing ESC once
-quits -- just like the original demo.
-
-If you run this executable in the MacOS Terminal (macOS Montery, Apple
-M1 Pro), pressing SPACE or ESC once isn't sufficient. You need to
-press another key afterward to make the suspend or quit command
-register. Is this bug, or is there something wrong with my Haskell
-code?
 
