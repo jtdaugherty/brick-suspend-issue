@@ -1,5 +1,8 @@
 # Brick Suspend Issue
 
+Refers to Brick [Issue
+364](https://github.com/jtdaugherty/brick/issues/364).
+
 This [github project](https://github.com/danchoi/brick-suspend-issue)
 demonstrates an issue I've discovered with suspending and halting in
 [Brick](https://github.com/jtdaugherty/brick). 
