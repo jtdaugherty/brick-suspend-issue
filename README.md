@@ -1,10 +1,10 @@
 # Brick Suspend Issue
 
 This project demonstrates an issue I've discovered with suspending and
-halting in Brick. 
+halting in [Brick](https://github.com/jtdaugherty/brick). 
 
 This executable is a slight modification of Brick's demo program
-brick-suspend-resume-demo. 
+[brick-suspend-resume-demo](https://github.com/jtdaugherty/brick/blob/master/programs/SuspendAndResumeDemo.hs). 
 
 The only modification is to use the /dev/tty handle directly as
 the configured `inputFd`:
@@ -22,7 +22,6 @@ the configured `inputFd`:
 Compile and run with:
 
     cabal run
-
 
 If you run this executable in Ubuntu, pressing SPACE once suspends and
 pressing ESC once quits -- just like the original demo.
