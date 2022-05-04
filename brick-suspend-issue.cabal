@@ -33,7 +33,7 @@ executable brick-suspend-issue
 
     ghc-options:         -threaded -Wall -Wcompat -O2
     main-is:             Main.hs
-    build-depends:       base < 4.16.0.0,
+    build-depends:       base < 4.18.0.0,
                          brick,
                          vty,
                          text,
@@ -48,11 +48,5 @@ executable minimal
 
     ghc-options:         -threaded -Wall -Wcompat -O2
     main-is:             Main2.hs
-    build-depends:       base < 4.16.0.0,
-                         brick,
-                         vty,
-                         text,
-                         unix,
-                         microlens >= 0.3.0.0,
-                         microlens-th,
-                         mtl
+    build-depends:       base < 4.18.0.0,
+                         unix
