@@ -1,31 +1,27 @@
 module Main where
 
-import Control.Monad (void, forever, forM_)
-import Control.Concurrent (threadDelay, forkIO)
-import GHC.Conc
-import System.IO
-import System.Posix
-import System.Posix.IO
-
-threadBody :: Fd -> IO ()
-threadBody fd = forever $ do
-    putStrLn "Calling threadWaitRead"
-    threadWaitRead fd
-    putStrLn "Calling fdRead"
-    (b, _) <- fdRead fd 1
-    putStrLn $ "read: " <> show b
+import Control.Monad (forever)
+import GHC.Conc (threadWaitRead)
+import System.IO (openFile, stdin, IOMode(..), BufferMode(..), hSetBuffering)
+import System.Posix (FdOption(..), setFdOption, fdRead, handleToFd)
+import System.Exit (exitFailure)
+import System.Environment (getArgs)
 
 main :: IO ()
 main = do
-    -- Approach 1:
-    hClose stdin
-    ttyHandle <- openFile "/dev/tty" ReadMode
-    ttyFd <- handleToFd ttyHandle
+    args <- getArgs
+    handle <- case args of
+        ["stdin"] -> return stdin
+        ["tty"]   -> openFile "/dev/tty" ReadMode
+        _         -> putStrLn "Usage: minimal <stdin|tty>" >> exitFailure
 
-    -- Approach 2:
-    -- ttyFd <- handleToFd stdin
-
+    hSetBuffering handle NoBuffering
+    ttyFd <- handleToFd handle
     setFdOption ttyFd NonBlockingRead False
 
-    forkIO (threadBody ttyFd)
-    threadDelay $ 100 * 1000 * 1000
+    forever $ do
+        putStrLn "Calling threadWaitRead"
+        threadWaitRead ttyFd
+        putStrLn "Calling fdRead"
+        (b, _) <- fdRead ttyFd 16
+        putStrLn $ "read: " <> show b
