@@ -6,6 +6,7 @@ module Main where
 import Lens.Micro ((.~), (^.), (&))
 import Lens.Micro.TH (makeLenses)
 import Control.Monad (void)
+import Control.Monad.Trans (liftIO)
 #if !(MIN_VERSION_base(4,11,0))
 import Data.Monoid
 #endif
@@ -44,9 +45,12 @@ drawUI st = [ui]
                   ]
 
 appEvent :: St -> BrickEvent () e -> EventM () (Next St)
-appEvent st (VtyEvent e) =
+appEvent st (VtyEvent e) = do
+    liftIO $ hPutStr stderr $ show e
     case e of
-        V.EvKey V.KEsc [] -> halt st
+        V.EvKey V.KEsc [] -> do
+            liftIO $ hPutStr stderr "Halting"
+            halt st
         V.EvKey (V.KChar ' ') [] -> suspendAndResume $ do
             putStrLn "Suspended. Please enter something and press enter to resume:"
             s <- getLine
@@ -71,11 +75,15 @@ theApp =
 main :: IO ()
 main = do
     -- void $ defaultMain theApp initialState
+    hClose stdin
     ttyHandle <- openFile "/dev/tty" ReadMode
     ttyFd <- IO.handleToFd ttyHandle
     defConfig <- V.standardIOConfig
     let builder = V.mkVty $ defConfig {
                     V.inputFd = Just ttyFd
                   }
+    -- let builder = V.mkVty defConfig
     initialVty <- builder
+    hPutStr stderr "Starting up"
     void $ customMain initialVty builder Nothing theApp initialState
+    hPutStr stderr "Shutting down"
